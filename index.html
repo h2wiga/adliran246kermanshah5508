@@ -6,7 +6,7 @@
     <style>
         :root {
             --primary-color: #2c3e50;
-            --background-color: #f8f9fa;
+            --background-color: rgba(255, 255, 255, 0.5);
             --loading-bg: rgba(255, 255, 255, 0.95);
             --error-red: #dc3545;
         }
@@ -22,15 +22,25 @@
         body {
             font-family: 'Vazirmatn', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
-            background: var(--background-color) url('https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png') center/contain no-repeat;
-            background-size: cover;
-            position: relative;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.5) 25%, rgba(0, 128, 0, 0.5) 25%, rgba(0, 128, 0, 0.5) 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, rgba(0, 128, 0, 0.5) 75%, rgba(0, 128, 0, 0.5)) repeat;
+            background-size: 40px 40px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: url('https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png') center/cover no-repeat;
+            opacity: 0.5;
+            filter: blur(10px);
         }
 
         .container {
@@ -40,6 +50,8 @@
             width: 100%;
             max-width: 600px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
         }
 
         .header {
@@ -152,6 +164,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
 </head>
 <body>
+    <div class="background-overlay"></div>
     <div class="container">
         <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="Logo" style="width: 100px;">
         <h1>لطفا شماره نامه را وارد کنید</h1>
