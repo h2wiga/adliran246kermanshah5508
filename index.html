@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>لیست مکاتبات</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --background-color: #f8f9fa;
+            --loading-bg: rgba(255, 255, 255, 0.95);
+            --error-red: #dc3545;
+        }
+
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: var(--background-color) url('https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png') center/contain no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            background: rgba(255,255,255,0.9);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            direction: ltr;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .error-popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid red;
+            border-radius: 10px;
+            z-index: 1000;
+            color: red;
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                font-size: 1.2rem;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
+</head>
+<body>
+    <div class="container">
+        <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="Logo" style="width: 100px;">
+        <h1>لطفا شماره نامه را وارد کنید</h1>
+        <input type="text" id="letterNumber" placeholder="شماره نامه">
+        <button onclick="checkLetter()">بررسی</button>
+    </div>
+
+    <div class="popup" id="popup">
+        <p id="popupText"></p>
+    </div>
+    <div class="error-popup" id="errorPopup">
+        دسترسی غیر مجاز
+    </div>
+
+    <script>
+        function checkLetter() {
+            var letterNumber = document.getElementById('letterNumber').value;
+            if (letterNumber === '37060053607735') {
+                document.getElementById('popupText').textContent = 'درخواست دفتر دادستانی شهرستان سنقر و کلیایی مبنی بر رفع شکایت و قرار قانونی خودرو به شماره بارکد 139567674 تیبا 2 به مشخصات * در تاریخ 1404/01/16 ثبت و به شمارگذاری ناجا شهرستان ابلاغ گردید.';
+                document.getElementById('popup').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('popup').style.display = 'none';
+                    document.getElementById('errorPopup').style.display = 'block';
+                }, 10000);
+            }
+        }
+    </script>
+</body>
+</html>
