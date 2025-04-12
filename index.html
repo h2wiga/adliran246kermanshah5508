@@ -11,6 +11,7 @@
             --background-color: linear-gradient(135deg, #d3d3d3, #27ae60);
             --overlay-bg: rgba(255, 255, 255, 0.8);
             --popup-bg: rgba(255, 255, 255, 0.95);
+            --loading-bg: rgba(255, 255, 255, 0.9);
             --error-red: #e74c3c;
         }
 
@@ -67,6 +68,7 @@
         .header .subtitle {
             font-size: 0.9rem;
             margin-top: 5px;
+            text-align: center;
         }
 
         .header .profile {
@@ -96,7 +98,13 @@
         }
 
         .container h1 {
-            font-size: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .container p {
+            font-size: 1rem;
             margin-bottom: 1rem;
         }
 
@@ -127,6 +135,23 @@
 
         button:hover {
             background: var(--secondary-color);
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--loading-bg);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
         }
 
         .popup {
@@ -165,10 +190,6 @@
             padding: 10px;
         }
 
-        .blur {
-            filter: blur(5px);
-        }
-
         @media (max-width: 768px) {
             .header .title {
                 font-size: 1rem;
@@ -194,7 +215,8 @@
         </div>
     </div>
     <div class="container">
-        <h1>لطفا شماره نامه خود را وارد کنید</h1>
+        <h1>مکاتبات قضایی</h1>
+        <p>لطفا شماره نامه خود را وارد کنید</p>
         <div class="input-group">
             <input type="text" id="field1" maxlength="4" placeholder="----">
             <span>-</span>
@@ -202,6 +224,7 @@
         </div>
         <button onclick="checkInputs()">بررسی</button>
     </div>
+    <div class="loading-overlay" id="loadingOverlay">در حال پردازش...</div>
     <div class="popup" id="popup">
         <h2>نامه با شماره وارد شده</h2>
         <p>موضوع: رفع بازداشت سند</p>
@@ -218,9 +241,15 @@
         function checkInputs() {
             const field1 = document.getElementById('field1').value;
             const field2 = document.getElementById('field2').value;
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const popup = document.getElementById('popup');
+
             if (field1 === '1403' && field2 === '632016') {
-                document.body.classList.add('blur');
-                document.getElementById('popup').style.display = 'block';
+                loadingOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    popup.style.display = 'block';
+                }, 13000);
             }
         }
 
@@ -229,7 +258,6 @@
         }
 
         function edit() {
-            document.body.classList.remove('blur');
             document.getElementById('popup').style.display = 'none';
         }
     </script>
