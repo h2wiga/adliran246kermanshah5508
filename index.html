@@ -5,7 +5,218 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سامانه ثنا قوه قضاییه</title>
     <style>
-        /* تمام استایل‌های قبلی بدون تغییر باقی می‌مانند */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --background-color: linear-gradient(135deg, #d3d3d3, #27ae60);
+            --overlay-bg: rgba(255, 255, 255, 0.8);
+            --popup-bg: rgba(255, 255, 255, 0.95);
+            --loading-bg: rgba(255, 255, 255, 0.9);
+            --error-red: #e74c3c;
+        }
+
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--background-color);
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            z-index: -1;
+        }
+
+        .header {
+            background: var(--overlay-bg);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo {
+            width: 50px;
+        }
+
+        .header .title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .header .subtitle {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .header .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .profile i {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .header .profile span {
+            cursor: pointer;
+            color: var(--error-red);
+        }
+
+        .date-time {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 0.9rem;
+            margin-left: 20px;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .date-time span {
+            margin: 2px 0;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .container p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        input {
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            width: 100px;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--loading-bg);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--popup-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .popup h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .popup p {
+            margin: 0.5rem 0;
+        }
+
+        .popup .buttons {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .popup .buttons button {
+            flex: 1;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header .title {
+                font-size: 1rem;
+            }
+
+            .header .subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .date-time {
+                font-size: 0.8rem;
+                margin-left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -35,10 +246,7 @@
         </div>
         <button onclick="checkInputs()">بررسی</button>
     </div>
-    
     <div class="loading-overlay" id="loadingOverlay">در حال پردازش...</div>
-    
-    <!-- پاپ‌آپ اول -->
     <div class="popup" id="popup">
         <h2>نامه با شماره وارد شده</h2>
         <p>موضوع: رفع بازداشت سند</p>
@@ -51,40 +259,36 @@
             <button onclick="edit()">اصلاح</button>
         </div>
     </div>
-
-    <!-- پاپ‌آپ دوم -->
-    <div class="popup" id="popup2">
-        <h2>اطلاعات سند مالک</h2>
-        <p>نام مالک: گل خندان کوشکی</p>
-        <p>کد ملی: 4199437878</p>
-        <p>ناحیه یک ثبت اسناد استان کرمانشاه</p>
-        <p>کد یکتا: 140120316001008115</p>
-        <div class="buttons">
-            <button onclick="closePopup2()">بستن</button>
-        </div>
-    </div>
-
+    
+    <!-- اضافه کردن کتابخانه تاریخ شمسی -->
     <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
     
     <script>
-        // توابع تاریخ و ساعت
+        // تابع نمایش تاریخ و ساعت
         function updateDateTime() {
             const dateElement = document.getElementById('persian-date');
             const timeElement = document.getElementById('persian-time');
+            
+            // تاریخ شمسی
             const persianDate = new PersianDate().format('YYYY/MM/DD');
+            
+            // ساعت ایرانی
             const now = new Date();
             const time = now.toLocaleTimeString('fa-IR', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit'
             });
+
             dateElement.textContent = persianDate;
             timeElement.textContent = time;
         }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
 
-        // توابع سیستم اصلی
+        // بروزرسانی هر ثانیه
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // اجرای اولیه
+
+        // توابع مربوط به سیستم اصلی
         function checkInputs() {
             const field1 = document.getElementById('field1').value;
             const field2 = document.getElementById('field2').value;
@@ -104,23 +308,8 @@
             alert("پرینت انجام شد!");
         }
 
-        // تابع اصلاح شده edit
         function edit() {
-            const popup = document.getElementById('popup');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            popup.style.display = 'none';
-            loadingOverlay.style.display = 'flex';
-            
-            setTimeout(() => {
-                loadingOverlay.style.display = 'none';
-                document.getElementById('popup2').style.display = 'block';
-            }, 10000);
-        }
-
-        // تابع جدید برای پاپ‌آپ دوم
-        function closePopup2() {
-            document.getElementById('popup2').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
         }
     </script>
 </body>
