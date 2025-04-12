@@ -236,6 +236,7 @@
             <span>خروج</span>
         </div>
     </div>
+    
     <div class="container">
         <h1>مکاتبات قضایی</h1>
         <p>لطفا شماره نامه خود را وارد کنید</p>
@@ -246,7 +247,9 @@
         </div>
         <button onclick="checkInputs()">بررسی</button>
     </div>
+
     <div class="loading-overlay" id="loadingOverlay">در حال پردازش...</div>
+
     <div class="popup" id="popup">
         <h2>نامه با شماره وارد شده</h2>
         <p>موضوع: رفع بازداشت سند</p>
@@ -259,36 +262,36 @@
             <button onclick="edit()">اصلاح</button>
         </div>
     </div>
-    
-    <!-- اضافه کردن کتابخانه تاریخ شمسی -->
+
+    <div class="popup" id="popup2">
+        <h2>اطلاعات سند مالک</h2>
+        <p>نام مالک: گل خندان کوشکی</p>
+        <p>کد ملی: 4199437878</p>
+        <p>ناحیه یک ثبت اسناد استان کرمانشاه</p>
+        <p>کد یکتا: 140120316001008115</p>
+        <div class="buttons">
+            <button onclick="closePopup2()">بستن</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
-    
     <script>
-        // تابع نمایش تاریخ و ساعت
         function updateDateTime() {
             const dateElement = document.getElementById('persian-date');
             const timeElement = document.getElementById('persian-time');
-            
-            // تاریخ شمسی
             const persianDate = new PersianDate().format('YYYY/MM/DD');
-            
-            // ساعت ایرانی
             const now = new Date();
             const time = now.toLocaleTimeString('fa-IR', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit'
             });
-
             dateElement.textContent = persianDate;
             timeElement.textContent = time;
         }
-
-        // بروزرسانی هر ثانیه
         setInterval(updateDateTime, 1000);
-        updateDateTime(); // اجرای اولیه
+        updateDateTime();
 
-        // توابع مربوط به سیستم اصلی
         function checkInputs() {
             const field1 = document.getElementById('field1').value;
             const field2 = document.getElementById('field2').value;
@@ -309,7 +312,18 @@
         }
 
         function edit() {
-            document.getElementById('popup').style.display = 'none';
+            const popup = document.getElementById('popup');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            popup.style.display = 'none';
+            loadingOverlay.style.display = 'flex';
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                document.getElementById('popup2').style.display = 'block';
+            }, 10000);
+        }
+
+        function closePopup2() {
+            document.getElementById('popup2').style.display = 'none';
         }
     </script>
 </body>
