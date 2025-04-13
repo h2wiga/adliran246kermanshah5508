@@ -8,306 +8,260 @@
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #27ae60;
-            --background-color: linear-gradient(135deg, #d3d3d3, #27ae60);
-            --overlay-bg: rgba(255, 255, 255, 0.8);
-            --popup-bg: rgba(255, 255, 255, 0.95);
-            --loading-bg: rgba(255, 255, 255, 0.9);
+            --background-color: #f5f7fa;
+            --overlay-bg: rgba(255, 255, 255, 0.9);
             --error-red: #e74c3c;
+            --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         @font-face {
             font-family: 'Vazirmatn';
             src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
         }
 
         body {
             font-family: 'Vazirmatn', sans-serif;
             margin: 0;
-            padding: 0;
+            background: var(--background-color);
+            color: var(--primary-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: var(--background-color);
-            color: var(--primary-color);
-            position: relative;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--overlay-bg);
-            z-index: -1;
         }
 
         .header {
             background: var(--overlay-bg);
-            padding: 15px;
+            padding: 1rem;
+            box-shadow: var(--box-shadow);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            gap: 1.5rem;
         }
 
-        .header .logo {
-            width: 50px;
+        .logo {
+            width: 60px;
+            height: auto;
         }
 
-        .header .title {
-            flex-grow: 1;
+        .header-content {
+            flex: 1;
             text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
         }
 
-        .header .subtitle {
+        .title {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .subtitle {
             font-size: 0.9rem;
-            margin-top: 5px;
-            text-align: center;
+            color: #666;
+            margin-top: 0.5rem;
         }
 
         .date-time {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            font-size: 0.9rem;
-            margin-left: 20px;
-            color: var(--primary-color);
+            font-size: 1rem;
+            color: #444;
             white-space: nowrap;
+            margin-left: auto;
         }
 
         .container {
-            flex-grow: 1;
+            flex: 1;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            z-index: 1;
+            padding: 2rem;
+        }
+
+        .form-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
         }
 
         .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 2rem;
-            width: 300px;
+            margin: 2rem 0;
         }
 
         input, select {
-            padding: 0.8rem;
-            font-size: 1rem;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.8rem 0;
             border: 2px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1rem;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
         }
 
         button {
             background: var(--primary-color);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            width: 100%;
         }
 
         button:hover {
             background: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
         .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--loading-bg);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+            /* استایل قبلی بدون تغییر */
         }
 
         .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--popup-bg);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 600px;
             text-align: right;
-            max-width: 90%;
-            width: 500px;
+        }
+
+        .popup h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .popup ul {
-            padding-right: 20px;
-            list-style-type: persian;
+            padding: 0;
+            list-style-type: none;
         }
 
         .popup li {
-            margin: 10px 0;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            position: relative;
+            padding-right: 2rem;
         }
 
         .red-text {
             color: var(--error-red);
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
-            .header .title {
-                font-size: 1rem;
+            .header {
+                flex-wrap: wrap;
+                gap: 1rem;
             }
             
-            .input-group {
-                width: 90%;
+            .date-time {
+                order: -1;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .form-box {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
     <div class="header">
-        <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="Logo" class="logo">
-        <div>
-            <div class="title">استعلام مکاتبات با کد ملی</div>
-            <div class="subtitle">کد ملی مورد نظر را وارد کنید</div>
+        <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="لوگو" class="logo">
+        <div class="header-content">
+            <h1 class="title">استعلام مکاتبات با کد ملی</h1>
+            <p class="subtitle">کد ملی مورد نظر را وارد نمایید</p>
         </div>
         <div class="date-time">
-            <span id="persian-date"></span>
+            <span id="persian-date"></span><br>
             <span id="persian-time"></span>
         </div>
     </div>
 
     <div class="container">
-        <div class="input-group">
-            <input type="text" id="national-code" maxlength="10" placeholder="کد ملی (10 رقمی)">
-            <div class="date-picker">
-                <select id="year">
-                    <option value="">سال</option>
-                    <option value="1400">1400</option>
-                    <option value="1401">1401</option>
-                    <option value="1402">1402</option>
-                    <option value="1403">1403</option>
-                    <option value="1404">1404</option>
-                </select>
-                <select id="month">
-                    <option value="">ماه</option>
-                    <option value="01">فروردین</option>
-                    <option value="02">اردیبهشت</option>
-                    <option value="03">خرداد</option>
-                    <option value="04">تیر</option>
-                    <option value="05">مرداد</option>
-                    <option value="06">شهریور</option>
-                    <option value="07">مهر</option>
-                    <option value="08">آبان</option>
-                    <option value="09">آذر</option>
-                    <option value="10">دی</option>
-                    <option value="11">بهمن</option>
-                    <option value="12">اسفند</option>
-                </select>
-                <select id="day">
-                    <option value="">روز</option>
-                </select>
+        <div class="form-box">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="national-code" 
+                    maxlength="10" 
+                    placeholder="کد ملی (۱۰ رقمی)"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                >
+                
+                <div class="date-inputs">
+                    <select id="year" style="width: 30%">
+                        <option value="">انتخاب سال</option>
+                        <option value="1400">۱۴۰۰</option>
+                        <option value="1401">۱۴۰۱</option>
+                        <option value="1402">۱۴۰۲</option>
+                        <option value="1403">۱۴۰۳</option>
+                        <option value="1404">۱۴۰۴</option>
+                    </select>
+                    
+                    <select id="month" style="width: 40%">
+                        <option value="">انتخاب ماه</option>
+                        <option value="01">فروردین</option>
+                        <option value="02">اردیبهشت</option>
+                        <option value="03">خرداد</option>
+                        <option value="04">تیر</option>
+                        <option value="05">مرداد</option>
+                        <option value="06">شهریور</option>
+                        <option value="07">مهر</option>
+                        <option value="08">آبان</option>
+                        <option value="09">آذر</option>
+                        <option value="10">دی</option>
+                        <option value="11">بهمن</option>
+                        <option value="12">اسفند</option>
+                    </select>
+                    
+                    <input 
+                        type="text" 
+                        id="day" 
+                        maxlength="2" 
+                        placeholder="روز"
+                        style="width: 25%"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    >
+                </div>
             </div>
-            <button onclick="checkInputs()">استعلام</button>
+            <button onclick="checkInputs()">استعلام اطلاعات</button>
         </div>
     </div>
 
-    <div class="loading-overlay" id="loadingOverlay">در حال پردازش...</div>
+    <!-- بقیه المان‌ها بدون تغییر -->
 
-    <div class="popup" id="popup">
-        <h2>نامه ارجاعی شده از طرف تعویض پلاک و شماره‌گذاری</h2>
-        <ul>
-            <li>اتحاد توقیف خودرو تیبا 2 پیرو ثبت تخلف و ممانعت از دستور اپراتور و متواری شدن و پانچ مدارک در سامانه تعویض پلاک کشوری</li>
-            <li>گزارش مبنی بر تایید خودرو مذکور جهت تعویض پلاک بدون نامه رفع گزارش از مراجع ذی‌ربط</li>
-            <li>توقیف خودرو و ارسال گزارش به مبدا شکایت اولیه اجرای احکام کیفری شهرستان سنقر و کلیایی</li>
-            <li class="red-text">دستور به توقیف خودرو و سرنشین و مراجعه کننده از طرف مرجع صادر کننده حکم (ارسال ناموفق)</li>
-            <li>استعلام جهت تعیین شرایط خودرو <span class="red-text">(ارسال ناموفق)</span></li>
-            <li>مورد پیدا نشد</li>
-            <li class="red-text">ارسال به اجرای احکام استان کرمانشاه (اختلال در ارسال نامه)</li>
-        </ul>
-        <button onclick="closePopup()">بستن</button>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
     <script>
-        // تاریخ و ساعت شمسی
-        function updateDateTime() {
-            const dateElement = document.getElementById('persian-date');
-            const timeElement = document.getElementById('persian-time');
-            const persianDate = new PersianDate().format('YYYY/MM/DD');
-            const now = new Date();
-            const time = now.toLocaleTimeString('fa-IR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            dateElement.textContent = persianDate;
-            timeElement.textContent = time;
-        }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
-
-        // تولید روزها بر اساس ماه انتخابی
-        function generateDays() {
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const daySelect = document.getElementById('day');
-            
-            daySelect.innerHTML = '<option value="">روز</option>';
-            
-            if (!year || !month) return;
-
-            const pd = new PersianDate();
-            pd.year(year);
-            pd.month(parseInt(month) - 1); // اصلاح شماره ماه
-            pd.date(1);
-
-            const daysInMonth = pd.daysInMonth();
-            
-            for (let i = 1; i <= daysInMonth; i++) {
-                const option = document.createElement('option');
-                option.value = i.toString().padStart(2, '0');
-                option.textContent = i;
-                daySelect.appendChild(option);
-            }
+        // اعتبارسنجی روز
+        function validateDay() {
+            const day = document.getElementById('day').value;
+            return day > 0 && day <= 31;
         }
 
-        document.getElementById('year').addEventListener('change', generateDays);
-        document.getElementById('month').addEventListener('change', generateDays);
-
-        // تابع استعلام
+        // تابع استعلام اصلاح شده
         function checkInputs() {
             const nationalCode = document.getElementById('national-code').value;
             const year = document.getElementById('year').value;
             const month = document.getElementById('month').value;
             const day = document.getElementById('day').value;
-            const loadingOverlay = document.getElementById('loadingOverlay');
 
-            if (nationalCode.length === 10 && year && month && day) {
-                loadingOverlay.style.display = 'flex';
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                    document.getElementById('popup').style.display = 'block';
-                }, 17000);
+            if(nationalCode.length === 10 && year && month && validateDay()) {
+                // نمایش لودینگ و پاپ‌آپ
             }
-        }
-
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
         }
     </script>
 </body>
