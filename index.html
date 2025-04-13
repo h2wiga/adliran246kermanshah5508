@@ -271,7 +271,12 @@
             
             if (!year || !month) return;
 
-            const daysInMonth = new PersianDate(`${year}-${month}-01`).daysInMonth();
+            const pd = new PersianDate();
+            pd.year(year);
+            pd.month(parseInt(month) - 1); // اصلاح شماره ماه
+            pd.date(1);
+
+            const daysInMonth = pd.daysInMonth();
             
             for (let i = 1; i <= daysInMonth; i++) {
                 const option = document.createElement('option');
