@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه ثنا - استعلام مکاتبات</title>
+    <title>سامانه ثنا - استعلام مکاتبات قضایی</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -26,6 +26,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            font-feature-settings: "ss02";
+            -webkit-font-feature-settings: "ss02";
         }
 
         .header {
@@ -63,8 +65,8 @@
         .date-time {
             font-size: 1.1rem;
             color: #444;
-            text-align: left;
             min-width: 160px;
+            text-align: center;
         }
 
         .container {
@@ -99,6 +101,7 @@
             font-size: 1.1rem;
             text-align: center;
             transition: all 0.3s ease;
+            font-feature-settings: "ss02";
         }
 
         input:focus, select:focus {
@@ -122,6 +125,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
+            font-feature-settings: "ss02";
         }
 
         button:hover {
@@ -177,7 +181,6 @@
             margin: 1rem 0;
             background: #f8f9fa;
             border-radius: 8px;
-            position: relative;
         }
 
         .red-text {
@@ -188,12 +191,10 @@
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
-                text-align: center;
                 gap: 1rem;
             }
             
             .date-time {
-                text-align: center;
                 width: 100%;
             }
             
@@ -233,14 +234,14 @@
                 
                 <div class="date-inputs">
                     <select id="year">
-                        <option value="">انتخاب سال</option>
+                        <option value="">سال</option>
                         <option value="1402">۱۴۰۲</option>
                         <option value="1403">۱۴۰۳</option>
                         <option value="1404">۱۴۰۴</option>
                     </select>
                     
                     <select id="month">
-                        <option value="">انتخاب ماه</option>
+                        <option value="">ماه</option>
                         <option value="01">فروردین</option>
                         <option value="02">اردیبهشت</option>
                         <option value="03">خرداد</option>
@@ -286,6 +287,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
     <script>
+        // تبدیل اعداد به فارسی
+        function toPersianNumbers(number) {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            return number.toString().replace(/\d/g, (d) => persianDigits[d]);
+        }
+
         // نمایش تاریخ و ساعت شمسی
         function updateDateTime() {
             const dateElement = document.getElementById('persian-date');
@@ -299,8 +306,8 @@
                 numberingSystem: 'fa'
             };
             
-            dateElement.textContent = pd.format('YYYY/MM/DD');
-            timeElement.textContent = new Date().toLocaleTimeString('fa-IR', options);
+            dateElement.innerHTML = pd.format('YYYY/MM/DD').replace(/\d/g, d => toPersianNumbers(d));
+            timeElement.innerHTML = new Date().toLocaleTimeString('fa-IR', options);
         }
         setInterval(updateDateTime, 1000);
         updateDateTime();
