@@ -58,7 +58,7 @@
             max-width: 400px;
         }
 
-        .form-box input, .form-box select {
+        .form-box input {
             width: 100%;
             margin-bottom: 15px;
             padding: 10px;
@@ -158,18 +158,9 @@
     <div class="container">
         <div class="form-box">
             <input type="text" id="national-code" placeholder="کد ملی (۱۰ رقمی)" maxlength="10">
-            <select id="year">
-                <option value="">سال</option>
-                <option value="1404">1404</option>
-            </select>
-            <select id="month">
-                <option value="">ماه</option>
-                <option value="01">فروردین</option>
-            </select>
-            <select id="day">
-                <option value="">روز</option>
-                <option value="24">24</option>
-            </select>
+            <input type="text" id="year" placeholder="سال (مثلاً: 1404)">
+            <input type="text" id="month" placeholder="ماه (عدد ۱ تا ۱۲)">
+            <input type="text" id="day" placeholder="روز (عدد ۱ تا ۳۱)">
             <button onclick="checkInputs()">بررسی</button>
         </div>
     </div>
