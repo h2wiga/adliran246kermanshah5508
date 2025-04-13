@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه ثنا قوه قضاییه</title>
+    <title>سامانه ثنا - استعلام مکاتبات</title>
     <style>
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #27ae60;
-            --background-color: #f5f7fa;
-            --overlay-bg: rgba(255, 255, 255, 0.9);
+            --background-color: #f8f9fa;
             --error-red: #e74c3c;
-            --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         @font-face {
@@ -30,16 +29,16 @@
         }
 
         .header {
-            background: var(--overlay-bg);
-            padding: 1rem;
+            background: white;
+            padding: 1.5rem;
             box-shadow: var(--box-shadow);
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .logo {
-            width: 60px;
+            width: 70px;
             height: auto;
         }
 
@@ -49,22 +48,23 @@
         }
 
         .title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 0;
-            color: #2c3e50;
+            color: var(--primary-color);
+            font-weight: 700;
         }
 
         .subtitle {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #666;
             margin-top: 0.5rem;
         }
 
         .date-time {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #444;
-            white-space: nowrap;
-            margin-left: auto;
+            text-align: left;
+            min-width: 160px;
         }
 
         .container {
@@ -77,25 +77,26 @@
 
         .form-box {
             background: white;
-            padding: 2.5rem;
+            padding: 3rem;
             border-radius: 15px;
             box-shadow: var(--box-shadow);
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             text-align: center;
         }
 
         .input-group {
             margin: 2rem 0;
+            display: grid;
+            gap: 1.5rem;
         }
 
         input, select {
             width: 100%;
             padding: 1rem;
-            margin: 0.8rem 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -105,13 +106,19 @@
             outline: none;
         }
 
+        .date-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
         button {
             background: var(--primary-color);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            padding: 1.2rem 2.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
@@ -123,37 +130,54 @@
         }
 
         .loading-overlay {
-            /* استایل قبلی بدون تغییر */
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 15px;
             box-shadow: var(--box-shadow);
             width: 90%;
-            max-width: 600px;
-            text-align: right;
+            max-width: 700px;
+            z-index: 1001;
         }
 
         .popup h2 {
             color: var(--primary-color);
+            font-size: 1.5rem;
             margin-bottom: 1.5rem;
             text-align: center;
         }
 
         .popup ul {
             padding: 0;
-            list-style-type: none;
+            list-style: none;
+            font-size: 1.1rem;
         }
 
         .popup li {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
+            padding: 1rem;
+            margin: 1rem 0;
             background: #f8f9fa;
             border-radius: 8px;
             position: relative;
-            padding-right: 2rem;
         }
 
         .red-text {
@@ -163,18 +187,22 @@
 
         @media (max-width: 768px) {
             .header {
-                flex-wrap: wrap;
+                flex-direction: column;
+                text-align: center;
                 gap: 1rem;
             }
             
             .date-time {
-                order: -1;
-                width: 100%;
                 text-align: center;
+                width: 100%;
             }
             
             .form-box {
                 padding: 1.5rem;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
             }
         }
     </style>
@@ -183,8 +211,8 @@
     <div class="header">
         <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="لوگو" class="logo">
         <div class="header-content">
-            <h1 class="title">استعلام مکاتبات با کد ملی</h1>
-            <p class="subtitle">کد ملی مورد نظر را وارد نمایید</p>
+            <h1 class="title">استعلام مکاتبات قضایی</h1>
+            <p class="subtitle">لطفا کد ملی و تاریخ مورد نظر را وارد نمایید</p>
         </div>
         <div class="date-time">
             <span id="persian-date"></span><br>
@@ -200,20 +228,18 @@
                     id="national-code" 
                     maxlength="10" 
                     placeholder="کد ملی (۱۰ رقمی)"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    oninput="this.value = this.value.replace(/\D/g, '')"
                 >
                 
                 <div class="date-inputs">
-                    <select id="year" style="width: 30%">
+                    <select id="year">
                         <option value="">انتخاب سال</option>
-                        <option value="1400">۱۴۰۰</option>
-                        <option value="1401">۱۴۰۱</option>
                         <option value="1402">۱۴۰۲</option>
                         <option value="1403">۱۴۰۳</option>
                         <option value="1404">۱۴۰۴</option>
                     </select>
                     
-                    <select id="month" style="width: 40%">
+                    <select id="month">
                         <option value="">انتخاب ماه</option>
                         <option value="01">فروردین</option>
                         <option value="02">اردیبهشت</option>
@@ -234,35 +260,452 @@
                         id="day" 
                         maxlength="2" 
                         placeholder="روز"
-                        style="width: 25%"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        oninput="this.value = this.value.replace(/\D/g, '')"
                     >
                 </div>
             </div>
-            <button onclick="checkInputs()">استعلام اطلاعات</button>
+            <button onclick="checkInputs()">بررسی و استعلام</button>
         </div>
     </div>
 
-    <!-- بقیه المان‌ها بدون تغییر -->
+    <div class="loading-overlay" id="loadingOverlay">در حال پردازش اطلاعات ...</div>
 
+    <div class="popup" id="popup">
+        <h2>نتایج استعلام سیستم</h2>
+        <ul>
+            <li>نامه ارجاعی از تعویض پلاک و شماره‌گذاری اتحاد</li>
+            <li>توقیف خودرو تیبا ۲ به دلیل ثبت تخلف و پانچ مدارک</li>
+            <li class="red-text">۲ گزارش تأیید خودرو بدون نامه رفع گزارش</li>
+            <li>ارجاع به اجرای احکام کیفری شهرستان سنقر و کلیایی</li>
+            <li class="red-text">دستور توقیف خودرو و سرنشین (ارسال ناموفق)</li>
+            <li class="red-text">استعلام شرایط خودرو (ارسال ناموفق)</li>
+            <li class="red-text">اختلال در ارسال به اجرای احکام کرمانشاه</li>
+        </ul>
+        <button onclick="closePopup()" style="margin-top: 1.5rem;">بستن پنجره</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
     <script>
-        // اعتبارسنجی روز
-        function validateDay() {
-            const day = document.getElementById('day').value;
-            return day > 0 && day <= 31;
+        // نمایش تاریخ و ساعت شمسی
+        function updateDateTime() {
+            const dateElement = document.getElementById('persian-date');
+            const timeElement = document.getElementById('persian-time');
+            
+            const pd = new PersianDate();
+            const options = { 
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                numberingSystem: 'fa'
+            };
+            
+            dateElement.textContent = pd.format('YYYY/MM/DD');
+            timeElement.textContent = new Date().toLocaleTimeString('fa-IR', options);
         }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
 
-        // تابع استعلام اصلاح شده
-        function checkInputs() {
-            const nationalCode = document.getElementById('national-code').value;
+        // اعتبارسنجی تاریخ
+        function validateDate() {
             const year = document.getElementById('year').value;
             const month = document.getElementById('month').value;
             const day = document.getElementById('day').value;
-
-            if(nationalCode.length === 10 && year && month && validateDay()) {
-                // نمایش لودینگ و پاپ‌آپ
+            
+            if(!year || !month || !day) return false;
+            
+            try {
+                const pd = new PersianDate();
+                pd.year(parseInt(year));
+                pd.month(parseInt(month)-1);
+                pd.date(parseInt(day));
+                return pd.isValid();
+            } catch {
+                return false;
             }
         }
+
+        // تابع اصلی استعلام
+        function checkInputs() {
+            const nationalCode = document.getElementById('national-code').value;
+            const isValid = validateDate();
+            const loading = document.getElementById('loadingOverlay');
+
+            if(nationalCode.length === 10 && isValid) {
+                loading.style.display = 'flex';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    document.getElementById('popup').style.display = 'block';
+                }, 17000);
+            } else {
+                alert("لطفاً:\n- کد ملی را صحیح وارد کنید (۱۰ رقم)\n- تاریخ را به درستی انتخاب نمایید");
+            }
+        }
+
+        // بستن پاپ‌آپ
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // اعتبارسنجی خودکار روز
+        document.getElementById('day').addEventListener('input', function() {
+            if(this.value > 31) this.value = 31;
+            if(this.value < 1) this.value = '';
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه ثنا - استعلام مکاتبات</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --background-color: #f8f9fa;
+            --error-red: #e74c3c;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            background: var(--background-color);
+            color: var(--primary-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .date-time {
+            font-size: 1.1rem;
+            color: #444;
+            text-align: left;
+            min-width: 160px;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .form-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin: 2rem 0;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 700px;
+            z-index: 1001;
+        }
+
+        .popup h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .popup ul {
+            padding: 0;
+            list-style: none;
+            font-size: 1.1rem;
+        }
+
+        .popup li {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .red-text {
+            color: var(--error-red);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .date-time {
+                text-align: center;
+                width: 100%;
+            }
+            
+            .form-box {
+                padding: 1.5rem;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://uploadkon.ir/uploads/29ca07_25949-927259a64d3a05632950cd5c46f3ee5a.png" alt="لوگو" class="logo">
+        <div class="header-content">
+            <h1 class="title">استعلام مکاتبات قضایی</h1>
+            <p class="subtitle">لطفا کد ملی و تاریخ مورد نظر را وارد نمایید</p>
+        </div>
+        <div class="date-time">
+            <span id="persian-date"></span><br>
+            <span id="persian-time"></span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-box">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="national-code" 
+                    maxlength="10" 
+                    placeholder="کد ملی (۱۰ رقمی)"
+                    oninput="this.value = this.value.replace(/\D/g, '')"
+                >
+                
+                <div class="date-inputs">
+                    <select id="year">
+                        <option value="">انتخاب سال</option>
+                        <option value="1402">۱۴۰۲</option>
+                        <option value="1403">۱۴۰۳</option>
+                        <option value="1404">۱۴۰۴</option>
+                    </select>
+                    
+                    <select id="month">
+                        <option value="">انتخاب ماه</option>
+                        <option value="01">فروردین</option>
+                        <option value="02">اردیبهشت</option>
+                        <option value="03">خرداد</option>
+                        <option value="04">تیر</option>
+                        <option value="05">مرداد</option>
+                        <option value="06">شهریور</option>
+                        <option value="07">مهر</option>
+                        <option value="08">آبان</option>
+                        <option value="09">آذر</option>
+                        <option value="10">دی</option>
+                        <option value="11">بهمن</option>
+                        <option value="12">اسفند</option>
+                    </select>
+                    
+                    <input 
+                        type="text" 
+                        id="day" 
+                        maxlength="2" 
+                        placeholder="روز"
+                        oninput="this.value = this.value.replace(/\D/g, '')"
+                    >
+                </div>
+            </div>
+            <button onclick="checkInputs()">بررسی و استعلام</button>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">در حال پردازش اطلاعات ...</div>
+
+    <div class="popup" id="popup">
+        <h2>نتایج استعلام سیستم</h2>
+        <ul>
+            <li>نامه ارجاعی از تعویض پلاک و شماره‌گذاری اتحاد</li>
+            <li>توقیف خودرو تیبا ۲ به دلیل ثبت تخلف و پانچ مدارک</li>
+            <li class="red-text">۲ گزارش تأیید خودرو بدون نامه رفع گزارش</li>
+            <li>ارجاع به اجرای احکام کیفری شهرستان سنقر و کلیایی</li>
+            <li class="red-text">دستور توقیف خودرو و سرنشین (ارسال ناموفق)</li>
+            <li class="red-text">استعلام شرایط خودرو (ارسال ناموفق)</li>
+            <li class="red-text">اختلال در ارسال به اجرای احکام کرمانشاه</li>
+        </ul>
+        <button onclick="closePopup()" style="margin-top: 1.5rem;">بستن پنجره</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.0.0/dist/persian-date.min.js"></script>
+    <script>
+        // نمایش تاریخ و ساعت شمسی
+        function updateDateTime() {
+            const dateElement = document.getElementById('persian-date');
+            const timeElement = document.getElementById('persian-time');
+            
+            const pd = new PersianDate();
+            const options = { 
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                numberingSystem: 'fa'
+            };
+            
+            dateElement.textContent = pd.format('YYYY/MM/DD');
+            timeElement.textContent = new Date().toLocaleTimeString('fa-IR', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // اعتبارسنجی تاریخ
+        function validateDate() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            
+            if(!year || !month || !day) return false;
+            
+            try {
+                const pd = new PersianDate();
+                pd.year(parseInt(year));
+                pd.month(parseInt(month)-1);
+                pd.date(parseInt(day));
+                return pd.isValid();
+            } catch {
+                return false;
+            }
+        }
+
+        // تابع اصلی استعلام
+        function checkInputs() {
+            const nationalCode = document.getElementById('national-code').value;
+            const isValid = validateDate();
+            const loading = document.getElementById('loadingOverlay');
+
+            if(nationalCode.length === 10 && isValid) {
+                loading.style.display = 'flex';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    document.getElementById('popup').style.display = 'block';
+                }, 17000);
+            } else {
+                alert("لطفاً:\n- کد ملی را صحیح وارد کنید (۱۰ رقم)\n- تاریخ را به درستی انتخاب نمایید");
+            }
+        }
+
+        // بستن پاپ‌آپ
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // اعتبارسنجی خودکار روز
+        document.getElementById('day').addEventListener('input', function() {
+            if(this.value > 31) this.value = 31;
+            if(this.value < 1) this.value = '';
+        });
     </script>
 </body>
 </html>
