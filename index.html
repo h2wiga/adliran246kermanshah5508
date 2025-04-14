@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>استعلام مکاتبات با کد ملی</title>
     <style>
+        @font-face {
+            font-family: 'Vazir';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/Vazir.woff2') format('woff2');
+        }
+
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #27ae60;
@@ -14,7 +19,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Vazir', 'Arial', sans-serif;
             margin: 0;
             background: var(--background-color);
             color: var(--primary-color);
@@ -128,8 +133,24 @@
             margin-bottom: 10px;
         }
 
-        .popup .red-text {
+        .popup ul li .description {
+            color: #007bff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .popup ul li .details {
+            display: none;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            color: #444;
+        }
+
+        .popup ul li.bold-red {
             color: var(--error-red);
+            font-weight: bold;
         }
 
         .popup button {
@@ -145,6 +166,20 @@
 
         .popup button:hover {
             background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .form-box {
+                padding: 15px;
+            }
+
+            .popup {
+                padding: 15px;
+            }
+
+            .popup ul li {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -169,13 +204,23 @@
     <div class="popup" id="popup">
         <h2>نتایج استعلام</h2>
         <ul>
-            <li>نامه ارجاعی شده از طرف تعویض پلاک و شماره‌گذاری اتحاد</li>
-            <li>توقیف خودرو تیبا ۲ پیرو ثبت تخلف و ممانعت از دستور اپراتور و پانچ مدارک</li>
-            <li>۲ گزارش مبنی بر تایید خودرو مذکور جهت تعویض پلاک بدون نامه رفع گزارش از مراجع ذی‌ربط</li>
-            <li>توقیف خودرو و ارسال گزارش به مبدا شکایت اولیه اجرای احکام کیفری شهرستان سنقر و کلیایی</li>
-            <li class="red-text">دستور به توقیف خودرو و سرنشین و مراجعه‌کننده از طرف مرجع صادرکننده حکم (ارسال ناموفق)</li>
-            <li class="red-text">استعلام جهت تعیین شرایط خودرو (ارسال ناموفق)</li>
-            <li class="red-text">ارسال به اجرای احکام استان کرمانشاه (اختلال در ارسال)</li>
+            <li>
+                نامه ارجاعی شده از طرف تعویض پلاک و شماره‌گذاری اتحاد
+                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
+                <p class="details">اپراتور تعویض پلاک اتحاد پس از مشاهده ثبت شکایت و تطبیق مشخصات...</p>
+            </li>
+            <li>
+                توقیف خودرو تیبا ۲ (کد ۱۳۹۵۶۷۶۷۴) پیرو ثبت تخلف و ممانعت از دستور اپراتور و پانچ مدارک
+                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
+                <p class="details">متن توضیحات مربوط به این مورد.</p>
+            </li>
+            <li>
+                مورد با مشخصات قید شده یافت نگردید
+                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
+                <p class="details">پس از دریافت نامه ارجاعی در سامانه اجرای احکام شعبه شهرستان سنقر و کلیایی مورد با مشخصات قید شده یافت نگردید و به علت مأموریت خارج از استان ریاست محترم شعبه دستور به مرجع نامعه مبنی بر استعلام از استان ارسال شد.</p>
+            </li>
+            <li class="bold-red">۲ گزارش مبنی بر تایید خودرو مذکور جهت تعویض پلاک بدون نامه رفع گزارش از مراجع ذی‌ربط</li>
+            <li class="bold-red">توقیف خودرو و ارسال گزارش به مبدا شکایت اولیه...</li>
         </ul>
         <button onclick="closePopup()">بستن</button>
     </div>
@@ -204,6 +249,11 @@
             const popup = document.getElementById('popup');
             popup.style.display = 'none';
         }
+
+        function toggleDetails(element) {
+            const details = element.nextElementSibling;
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
-</html>
+    </html>
