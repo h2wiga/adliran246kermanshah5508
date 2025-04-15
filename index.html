@@ -3,23 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استعلام مکاتبات با کد ملی</title>
+    <title>استعلام ممنوع الخدمات</title>
     <style>
-        @font-face {
-            font-family: 'Vazir';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/Vazir.woff2') format('woff2');
-        }
-
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #27ae60;
-            --background-color: #f8f9fa;
             --error-red: #e74c3c;
+            --background-color: #f8f9fa;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: 'Vazir', 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             background: var(--background-color);
             color: var(--primary-color);
@@ -33,16 +28,18 @@
             padding: 20px;
             background: white;
             box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
         }
 
         .header h1 {
             margin: 0;
             font-size: 1.8rem;
+            color: var(--error-red);
         }
 
         .header p {
-            margin-top: 5px;
-            font-size: 1rem;
+            margin-top: 10px;
+            font-size: 0.9rem;
             color: #666;
         }
 
@@ -51,40 +48,53 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
-        .form-box {
+        .input-section {
             background: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: var(--box-shadow);
-            text-align: center;
             width: 100%;
             max-width: 400px;
+            text-align: center;
         }
 
-        .form-box input {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .input-group {
+            margin-bottom: 25px;
         }
 
-        .form-box button {
+        input#national-code {
             width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            color: white;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input#national-code:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button#check-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
             background: var(--primary-color);
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .form-box button:hover {
-            background: var(--secondary-color);
+        button#check-btn:hover {
+            background: var(--error-red);
+            transform: translateY(-2px);
         }
 
         .loading-overlay {
@@ -100,6 +110,7 @@
             align-items: center;
             font-size: 1.5rem;
             font-weight: bold;
+            flex-direction: column;
         }
 
         .popup {
@@ -109,151 +120,127 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 12px;
             box-shadow: var(--box-shadow);
             width: 90%;
-            max-width: 400px;
-            text-align: center;
+            max-width: 500px;
+            text-align: right;
         }
 
-        .popup h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .popup ul {
-            text-align: left;
-            padding: 0;
-            list-style: none;
-            font-size: 1rem;
-        }
-
-        .popup ul li {
-            margin-bottom: 10px;
-        }
-
-        .popup ul li .description {
-            color: #007bff;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        .popup ul li .details {
-            display: none;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            color: #444;
-        }
-
-        .popup ul li.bold-red {
+        .popup-header {
             color: var(--error-red);
-            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
         }
 
-        .popup button {
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 1rem;
-            color: white;
-            background: var(--primary-color);
+        .popup-content {
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .popup button:hover {
+        .remove-btn {
             background: var(--secondary-color);
+            color: white;
         }
 
-        @media (max-width: 768px) {
-            .form-box {
-                padding: 15px;
-            }
+        .exit-btn {
+            background: var(--error-red);
+            color: white;
+        }
 
+        @media (max-width: 480px) {
+            .input-section {
+                padding: 20px;
+            }
+            
             .popup {
                 padding: 15px;
-            }
-
-            .popup ul li {
-                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>استعلام مکاتبات با کد ملی</h1>
-        <p>کد ملی و تاریخ مورد نظر را وارد کنید</p>
+        <h1>استعلام ممنوع الخدمات بودن کد ملی</h1>
+        <p>جهت استعلام کد ملی خود را وارد کنید</p>
     </div>
 
     <div class="container">
-        <div class="form-box">
-            <input type="text" id="national-code" placeholder="کد ملی (۱۰ رقمی)" maxlength="10">
-            <input type="text" id="year" placeholder="سال (مثلاً: 1404)">
-            <input type="text" id="month" placeholder="ماه (عدد ۱ تا ۱۲)">
-            <input type="text" id="day" placeholder="روز (عدد ۱ تا ۳۱)">
-            <button onclick="checkInputs()">بررسی</button>
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" 
+                       id="national-code" 
+                       placeholder="کد ملی (۱۰ رقمی)"
+                       maxlength="10"
+                       inputmode="numeric">
+            </div>
+            <button id="check-btn" onclick="checkNationalCode()">بررسی وضعیت</button>
         </div>
     </div>
 
-    <div class="loading-overlay" id="loadingOverlay">در حال پردازش...</div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        در حال بررسی اطلاعات...
+    </div>
 
     <div class="popup" id="popup">
-        <h2>نتایج استعلام</h2>
-        <ul>
-            <li>
-                نامه ارجاعی شده از طرف تعویض پلاک و شماره‌گذاری اتحاد
-                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
-                <p class="details"> اپراتور تعویض پلاک اتحاد پس از مشاهده ثبت شکایت تعویض پلاک کرمانشاه و تطبیق مشخصات...</p>
-            </li>
-            <li>
-                توقیف خودرو تیبا ۲ (کد ۱۳۹۵۶۷۶۷۴) پیرو ثبت تخلف و ممانعت از دستور اپراتور و پانچ مدارک
-                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
-                <p class="details">متن توضیحات مربوط به این مورد یافت نگردید.</p>
-            </li>
-            <li>
-                مورد با مشخصات قید شده یافت نگردید
-                <span class="description" onclick="toggleDetails(this)">توضیحات</span>
-                <p class="details">پس از دریافت نامه ارجاعی در سامانه اجرای احکام شعبه شهرستان سنقر و کلیایی مورد با مشخصات قید شده یافت نگردید و به علت انجام مأموریت خارج از استان ریاست محترم شعبه دستور به مرجع نامه (تعویض پلاک و شماره گذاری اتحاد) مبنی بر استعلام از استان ارسال شد.</p>
-            </li>
-            <li class="bold-red">۲ گزارش مبنی بر تایید خودرو مذکور جهت تعویض پلاک بدون نامه رفع گزارش از مراجع ذی‌ربط</li>
-            <li class="bold-red">توقیف خودرو و ارسال گزارش به مبدا شکایت اولیه...</li>
-        </ul>
-        <button onclick="closePopup()">بستن</button>
+        <div class="popup-header">ممنوع الخدمات</div>
+        <div class="popup-content">
+            <p><strong>نام و نام خانوادگی:</strong> رسول لطیفی</p>
+            <p><strong>نوع:</strong> ممنوع خدمات</p>
+            <p><strong>مدعی العموم:</strong> اتهام توهین و اتهام و قدرت نمایی با صلاح سرد</p>
+            <p><strong>مجری:</strong> شعبه 4 اجرای احکام کیفری دادسرای عمومی و انقلاب شهرستان کرمانشاه</p>
+        </div>
+        <div class="popup-buttons">
+            <button class="popup-btn remove-btn" onclick="removeRestriction()">رفع ممنوعیت</button>
+            <button class="popup-btn exit-btn" onclick="closePopup()">خروج</button>
+        </div>
     </div>
 
     <script>
-        function checkInputs() {
+        function checkNationalCode() {
             const nationalCode = document.getElementById('national-code').value;
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
             const loadingOverlay = document.getElementById('loadingOverlay');
             const popup = document.getElementById('popup');
 
-            if (nationalCode === '3259218211' && year === '1404' && month === '01' && day === '24') {
+            if(nationalCode === '3259203842') {
                 loadingOverlay.style.display = 'flex';
+                
                 setTimeout(() => {
                     loadingOverlay.style.display = 'none';
                     popup.style.display = 'block';
-                }, 17000);
+                }, 20000);
             } else {
-                alert('لطفاً کد ملی و تاریخ معتبر را وارد کنید');
+                alert('کد ملی وارد شده معتبر نیست');
             }
         }
 
         function closePopup() {
-            const popup = document.getElementById('popup');
-            popup.style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
         }
 
-        function toggleDetails(element) {
-            const details = element.nextElementSibling;
-            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        function removeRestriction() {
+            alert('درخواست رفع ممنوعیت ارسال شد');
+            closePopup();
         }
     </script>
 </body>
-    </html>
+</html>
